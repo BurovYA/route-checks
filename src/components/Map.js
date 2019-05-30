@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Houses from './Houses';
 
 import 'ol/ol.css';
 import OlMap from 'ol/Map';
