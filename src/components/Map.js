@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Houses from './Houses';
 
 import 'ol/ol.css';
 import OlMap from 'ol/Map';
@@ -9,12 +8,13 @@ import View from 'ol/View.js';
 import XYZ from 'ol/source/XYZ.js';
 import { ATTRIBUTION as OSM_ATTRIBUTION } from 'ol/source/OSM.js';
 import { defaults as defaultControls } from 'ol/control.js';
+import { transform } from 'ol/proj';
 
 const MapContainer = styled.div`
   height: 100%;
 `;
 
-export default class Map extends Component {
+class Map extends Component {
   constructor(props) {
     super(props);
     this.mapContainer = React.createRef();
@@ -40,15 +40,11 @@ export default class Map extends Component {
       target: this.mapContainer.current,
       controls: defaultControls({ zoom: false }),
       view: new View({
-        center: [0, 0],
-        zoom: 2
+        center: transform([37.618423, 55.751244], 'EPSG:4326', 'EPSG:3857'),
+        zoom: 8
       })
     });
-
-    //this.olMap.updateSize();
-
-    setTimeout(() => {
-      this.olMap.updateSize();
-    }, 200);
   }
 }
+
+export default Map;

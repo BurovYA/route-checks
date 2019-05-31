@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import { Provider } from 'mobx-react';
+
 import Box from '@material-ui/core/Box';
-import Drawer from '@material-ui/core/Drawer';
 import Map from './components/Map';
+
+import RouteContainer from './containers/RouteContainer';
+import MapToolbarContainer from './containers/MapToolbarContainer';
 import './App.css';
+
+/* stores */
+import routeStore from './stores/RouteStore';
 
 const boxStyle = {
   height: '100%'
@@ -15,64 +19,28 @@ const relativePos = {
   position: 'relative'
 };
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showRoutes: false
-    };
+const stores = { routeStore };
 
-    this.drawerContainer = React.createRef();
-    this.menuButtonClick = this.menuButtonClick.bind(this);
-  }
-  menuButtonClick(e) {
-    this.setState(state => ({
-      showRoutes: !state.showRoutes
-    }));
-  }
+class App extends Component {
   render() {
     return (
-      <Box
-        display="flex"
-        flexDirection="column"
-        justify="flex-start"
-        alignItems="stretch"
-        style={boxStyle}
-      >
-        <Box>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="Menu"
-              onClick={this.menuButtonClick}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Toolbar>
-        </Box>
+      <Provider {...stores}>
         <Box
-          flexGrow={1}
-          minHeight={0}
-          ref={this.drawerContainer}
-          style={relativePos}
+          display='flex'
+          flexDirection='column'
+          justify='flex-start'
+          alignItems='stretch'
+          style={boxStyle}
         >
-          <Drawer
-            anchor="left"
-            variant="persistent"
-            open={this.state.showRoutes}
-            PaperProps={{
-              style: { position: 'absolute' }
-            }}
-            ModalProps={{
-              container: this.drawerContainer.current
-            }}
-          >
-            saddsadsa
-          </Drawer>
-          <Map />
+          <Box>
+            <MapToolbarContainer />
+          </Box>
+          <Box flexGrow={1} minHeight={0} style={relativePos}>
+            <RouteContainer />
+            <Map />
+          </Box>
         </Box>
-      </Box>
+      </Provider>
     );
   }
 }
