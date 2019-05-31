@@ -44,5 +44,11 @@ export default class Map extends Component {
         zoom: 2
       })
     });
+
+    //this.olMap.updateSize();
+
+    setTimeout(() => {
+      this.olMap.updateSize();
+    }, 200);
   }
 }
