@@ -3,9 +3,12 @@ import { observer, inject } from 'mobx-react';
 
 import Route from '../components/Route';
 
-const RouteContainer = inject('routeStore')(
-  observer(({ routeStore }) => (
-    <Route container={routeStore.container} visible={routeStore.visible} />
+const RouteContainer = inject('houseStore', 'leftPanelStore')(
+  observer(({ houseStore, leftPanelStore }) => (
+    <Route
+      visible={leftPanelStore.visible}
+      houses={houseStore.routeHouses.slice()}
+    />
   ))
 );
 

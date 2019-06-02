@@ -8,6 +8,7 @@ const houses = [
   {
     address: 'г. Москва, ул. Усачева, 33, строен. 1',
     position: [55.723188, 37.561111],
+    date: '22.07.2014',
     zone: {
       name: 'CЭ-1',
       chief: {
@@ -19,6 +20,7 @@ const houses = [
   {
     address: 'г. Москва, ул. Усачева, 33/2, строен. 6',
     position: [55.722886, 37.561487],
+    date: '22.07.2014',
     zone: {
       name: 'CЭ-1',
       chief: {
@@ -30,6 +32,7 @@ const houses = [
   {
     address: 'г. Москва, ул. Лужники, 1с2',
     position: [55.725193, 37.561013],
+    date: '22.07.2014',
     zone: {
       name: 'CЭ-95',
       chief: {
@@ -41,6 +44,7 @@ const houses = [
   {
     address: 'г. Москва, Лужнецкий пр-д, 1',
     position: [55.725409, 37.560311],
+    date: '22.07.2014',
     zone: {
       name: 'CЭ-95',
       chief: {
@@ -52,6 +56,7 @@ const houses = [
   {
     address: 'г. Москва, ул. 10-летия Октября, 2с4',
     position: [55.725817, 37.560676],
+    date: '22.07.2014',
     zone: {
       name: 'CЭ-95',
       chief: {

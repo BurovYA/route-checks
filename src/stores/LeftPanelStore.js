@@ -1,10 +1,12 @@
 import { decorate, observable, computed, action } from 'mobx';
 
-class RouteStore {
+class LeftPanelStore {
   visible = false;
+  searchValue = '';
 
   constructor() {
-    this.visible = false;
+    this.visible = true;
+    this.searchValue = '';
   }
 
   get isVisible() {
@@ -24,7 +26,8 @@ class RouteStore {
   }
 }
 
-decorate(RouteStore, {
+decorate(LeftPanelStore, {
+  searchValue: observable,
   visible: observable,
   isVisible: computed,
   toggle: action,
@@ -32,7 +35,7 @@ decorate(RouteStore, {
   hide: action
 });
 
-const routeStore = new RouteStore();
+const leftPanelStore = new LeftPanelStore();
 
-export default routeStore;
-export { RouteStore };
+export default leftPanelStore;
+export { LeftPanelStore };

@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { Provider } from 'mobx-react';
-
 import Box from '@material-ui/core/Box';
-import Map from './components/Map';
-
-import RouteContainer from './containers/RouteContainer';
-import MapToolbarContainer from './containers/MapToolbarContainer';
 import './App.css';
 
+/* containers */
+import MapContainer from './containers/MapContainer';
+import MapToolbarContainer from './containers/MapToolbarContainer';
+import RouteContainer from './containers/RouteContainer';
+
 /* stores */
-import routeStore from './stores/RouteStore';
+import houseStore from './stores/HouseStore';
+import leftPanelStore from './stores/LeftPanelStore';
+import mapStore from './stores/MapStore';
 
 const boxStyle = {
   height: '100%'
@@ -19,7 +21,7 @@ const relativePos = {
   position: 'relative'
 };
 
-const stores = { routeStore };
+const stores = { houseStore, leftPanelStore, mapStore };
 
 class App extends Component {
   render() {
@@ -37,7 +39,7 @@ class App extends Component {
           </Box>
           <Box flexGrow={1} minHeight={0} style={relativePos}>
             <RouteContainer />
-            <Map />
+            <MapContainer />
           </Box>
         </Box>
       </Provider>
