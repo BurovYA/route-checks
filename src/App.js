@@ -11,7 +11,6 @@ import RouteContainer from './containers/RouteContainer';
 /* stores */
 import houseStore from './stores/HouseStore';
 import leftPanelStore from './stores/LeftPanelStore';
-import mapStore from './stores/MapStore';
 
 const boxStyle = {
   height: '100%'
@@ -21,17 +20,17 @@ const relativePos = {
   position: 'relative'
 };
 
-const stores = { houseStore, leftPanelStore, mapStore };
+const stores = { houseStore, leftPanelStore };
 
 class App extends Component {
   render() {
     return (
       <Provider {...stores}>
         <Box
-          display='flex'
-          flexDirection='column'
-          justify='flex-start'
-          alignItems='stretch'
+          display="flex"
+          flexDirection="column"
+          justify="flex-start"
+          alignItems="stretch"
           style={boxStyle}
         >
           <Box>
