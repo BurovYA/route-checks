@@ -3,14 +3,14 @@ import { observer, inject } from 'mobx-react';
 
 import MapToolbar from '../components/MapToolbar';
 
-const MapToolbarContainer = inject('leftPanelStore')(
-  observer(({ leftPanelStore }) => (
+const MapToolbarContainer = inject('toolbarStore')(
+  observer(({ toolbarStore }) => (
     <MapToolbar
-      menuButtonPushed={leftPanelStore.isVisible}
-      menuButtonClick={() => leftPanelStore.toggle()}
-      searchValue={leftPanelStore.searchValue}
-      onChange={e => {
-        leftPanelStore.searchValue = e.target.value;
+      menuButtonPushed={toolbarStore.menuButtonPushed}
+      menuButtonClick={() => toolbarStore.toggle()}
+      searchValue={toolbarStore.searchValue}
+      onChange={eventData => {
+        toolbarStore.setSearchValue(eventData.target.value);
       }}
     />
   ))

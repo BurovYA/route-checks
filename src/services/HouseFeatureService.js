@@ -1,7 +1,6 @@
 import Feature from 'ol/Feature.js';
 import Point from 'ol/geom/Point.js';
 import { Circle, RegularShape, Fill, Stroke, Style, Text } from 'ol/style.js';
-
 import OlMapService from './OlMapService';
 
 let styleCache = {};
@@ -103,28 +102,6 @@ class HouseFeatureService {
       fill: new Fill({
         color: '#333'
       })
-    });
-  }
-
-  static houseFeatureClick(feature, layer) {
-    const childFeatures = feature.get('features');
-
-    //В маршрут будем добавлять только по одному дому
-    if (childFeatures.length !== 1) {
-      return;
-    }
-
-    let childFeature = childFeatures[0];
-    const featureProperties = childFeature.getProperties();
-    const house = featureProperties.house;
-    if (house.indexInRoute > -1) {
-      //houseStore.removeHouseFromRoute(house);
-    } else {
-      //houseStore.addHouseToRoute(house);
-    }
-
-    feature.setStyle(clusterFeature => {
-      return HouseFeatureService.clusterFeatureStyle(clusterFeature);
     });
   }
 }

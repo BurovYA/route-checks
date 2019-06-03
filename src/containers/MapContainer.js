@@ -3,14 +3,14 @@ import { observer, inject } from 'mobx-react';
 
 import Map from '../components/Map';
 
-const MapContainer = inject('houseStore', 'leftPanelStore')(
-  observer(({ houseStore, leftPanelStore }) => (
+const MapContainer = inject('houseStore', 'toolbarStore')(
+  observer(({ houseStore, toolbarStore }) => (
     <Map
       houses={houseStore.houses.filter(house => {
-        return house.zone.name.includes(leftPanelStore.searchValue);
+        return house.zone.name.includes(toolbarStore.searchValueDelayed);
       })}
-      addHouseToRoute={houseStore.addHouseToRoute}
-      removeHouseFromRoute={houseStore.removeHouseFromRoute}
+      addHouseToRoute={house => houseStore.addHouseToRoute(house)}
+      removeHouseFromRoute={house => houseStore.removeHouseFromRoute(house)}
     />
   ))
 );

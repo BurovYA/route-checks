@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { styled } from '@material-ui/styles';
 
 //Openlayers map services
 import HouseFeatureService from '../services/HouseFeatureService';
@@ -6,12 +7,9 @@ import OlLayerSerice from '../services/OlLayerService';
 import OlMapService from '../services/OlMapService';
 import OlSourceService from '../services/OlSourceService';
 
-//TODO: везде использовать одинаковую библиотеку для StyledComponents
-import styled from 'styled-components';
-
-const MapContainer = styled.div`
-  height: 100%;
-`;
+const OlMapWrapper = styled('div')({
+  height: '100%'
+});
 
 class Map extends Component {
   constructor(props) {
@@ -61,31 +59,44 @@ class Map extends Component {
       controls: controls,
       view: view
     });
+
+    //Подписка на событие клика на карте
+    this.map.on('click', eventData => {
+      this.map.forEachFeatureAtPixel(eventData.pixel, (feature, layer) => {
+        const childFeatures = feature.get('features');
+
+        //В маршрут будем добавлять только по одному дому
+        if (childFeatures.length !== 1) {
+          return;
+        }
+
+        let childFeature = childFeatures[0];
+        const featureProperties = childFeature.getProperties();
+        const house = featureProperties.house;
+        if (house.indexInRoute > -1) {
+          this.props.removeHouseFromRoute(house);
+        } else {
+          this.props.addHouseToRoute(house);
+        }
+
+        feature.setStyle(clusterFeature => {
+          return HouseFeatureService.clusterFeatureStyle(clusterFeature);
+        });
+      });
+    });
   }
   render() {
-    return <MapContainer ref={this.mapContainer} />;
+    return <OlMapWrapper ref={this.mapContainer} />;
   }
   componentDidMount() {
     //Установка карты в dom
     this.map.setTarget(this.mapContainer.current);
   }
   componentDidUpdate(prevProps) {
-    console.log('updated');
-
     this.houseSource.clear();
     this.houseSource.addFeatures(
       HouseFeatureService.createHouseFeatures(this.props.houses)
     );
-
-    //console.log(this.props.houses);
-    /*
-    if (this._layer) {
-      this._map.removeLayer(this._layer);
-    }
-
-    this._layer = this.props.createLayer(this.props.layerData);
-    this._map.addLayer(this._layer);
-    */
   }
 }
 
