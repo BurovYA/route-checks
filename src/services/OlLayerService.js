@@ -7,7 +7,7 @@ class OlLayerService {
     });
   }
 
-  static createClusterLayer(clusterSource, styleFunction) {
+  static createVectorLayer(clusterSource, styleFunction) {
     const clusterLayer = new VectorLayer({
       source: clusterSource,
       style: feature => {

@@ -6,7 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import PersonIcon from '@material-ui/icons/Person';
-import SputnikRouteService from '../services/SputnikRouteService';
+import MapboxRouteService from '../services/MapboxRouteService';
 
 const StyledList = styled(List)(({ theme }) => ({
   width: '100%',
@@ -21,7 +21,7 @@ class Route extends Component {
   render() {
     let index = 0;
     const listItems = this.props.houses.map(house => (
-      <ListItem alignItems='flex-start' key={index++}>
+      <ListItem alignItems="flex-start" key={index++}>
         <div
           style={{
             backgroundColor: house.zoneColor,
@@ -48,8 +48,8 @@ class Route extends Component {
 
     return (
       <Drawer
-        anchor='left'
-        variant='persistent'
+        anchor="left"
+        variant="persistent"
         open={this.props.visible}
         PaperProps={{
           style: { position: 'absolute' }
@@ -57,7 +57,7 @@ class Route extends Component {
       >
         <StyledList>
           {listItems.length === 0 && (
-            <ListItem alignItems='center' key={'no-data'}>
+            <ListItem alignItems="center" key={'no-data'}>
               <ListItemText primary={'Ни одного дома не добавлено'} />
             </ListItem>
           )}
@@ -67,11 +67,17 @@ class Route extends Component {
     );
   }
   componentDidUpdate(prevProps) {
-    SputnikRouteService.getRoute(
-      this.props.houses.map(house => {
-        return house.position;
-      })
-    );
+    if (this.props.houses.length > 1) {
+      MapboxRouteService.getRoute(
+        this.props.houses.map(house => {
+          return house.position;
+        })
+      ).then(data => {
+        this.props.setRouteData(data);
+      });
+    } else {
+      this.props.setRouteData(null);
+    }
   }
 }
 

@@ -3,10 +3,12 @@ import { computed, decorate, observable, action, extendObservable } from 'mobx';
 class HouseStore {
   houses = [];
   routeHouses = [];
+  routeData = null;
 
   constructor() {
     this.houses = [];
     this.routeHouses = [];
+    this.routeData = null;
     this.fetch();
   }
 
@@ -88,16 +90,22 @@ class HouseStore {
       house.indexInRoute = -1;
     }
   }
+
+  setRouteData(routeData) {
+    this.routeData = routeData;
+  }
 }
 
 decorate(HouseStore, {
   houses: observable,
   routeHouses: observable,
+  routeData: observable,
   fetch: action,
   putHouses: action,
   addHouseToRoute: action,
   removeHouseFromRoute: action,
-  getHouses: action
+  getHouses: action,
+  setRouteData: action
 });
 
 const houseStore = new HouseStore();

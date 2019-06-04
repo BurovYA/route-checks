@@ -3,6 +3,7 @@ import { styled } from '@material-ui/styles';
 
 //Openlayers map services
 import HouseFeatureService from '../services/HouseFeatureService';
+import RouteFeatureService from '../services/RouteFeatureService';
 import OlLayerSerice from '../services/OlLayerService';
 import OlMapService from '../services/OlMapService';
 import OlSourceService from '../services/OlSourceService';
@@ -45,16 +46,24 @@ class Map extends Component {
       houseSource,
       15
     );
-    const houseLayer = OlLayerSerice.createClusterLayer(
+    const houseLayer = OlLayerSerice.createVectorLayer(
       houseClusterSource,
       HouseFeatureService.clusterFeatureStyle
     );
     //В этот источник будут добавлятся сущности домов
     this.houseSource = houseSource;
 
+    //Слой для маршрута
+    const routeSource = OlSourceService.createVectorSource([]);
+    const routeLayer = OlLayerSerice.createVectorLayer(
+      routeSource,
+      RouteFeatureService.routeFeatureStyle
+    );
+    this.routeSource = routeSource;
+
     //Создание карты
     this.map = OlMapService.createMap({
-      layers: [baseLayer, houseLayer],
+      layers: [baseLayer, houseLayer, routeLayer],
       target: null,
       controls: controls,
       view: view
@@ -97,6 +106,13 @@ class Map extends Component {
     this.houseSource.addFeatures(
       HouseFeatureService.createHouseFeatures(this.props.houses)
     );
+
+    this.routeSource.clear();
+    if (this.props.routeData) {
+      this.routeSource.addFeatures(
+        RouteFeatureService.createRouteFeatures(this.props.routeData)
+      );
+    }
   }
 }
 
