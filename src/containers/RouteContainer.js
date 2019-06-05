@@ -8,9 +8,7 @@ const RouteContainer = inject('houseStore', 'toolbarStore')(
     <Route
       visible={toolbarStore.menuButtonPushed}
       houses={houseStore.routeHouses.slice()}
-      setRouteData={routeData => {
-        houseStore.setRouteData(routeData);
-      }}
+      routeDistance={houseStore.routeDistance}
     />
   ))
 );

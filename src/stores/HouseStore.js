@@ -1,4 +1,5 @@
-import { computed, decorate, observable, action, extendObservable } from 'mobx';
+import { computed, decorate, observable, action } from 'mobx';
+import TestDataService from '../services/TestDataService';
 
 class HouseStore {
   houses = [];
@@ -9,24 +10,15 @@ class HouseStore {
     this.houses = [];
     this.routeHouses = [];
     this.routeData = null;
-    this.fetch();
+
+    //Установка тестового массива данных
+    this.putHouses(TestDataService.getTestData());
   }
 
   getHouses(searchValue) {
     return this.houses.filter(house => {
       return house.zone.name.includes(searchValue);
     });
-  }
-
-  fetch() {
-    return fetch('/api/houses')
-      .then(response => {
-        //TODO: Обработка ошибок
-        return response.json();
-      })
-      .then(houses => {
-        this.putHouses(houses);
-      });
   }
 
   putHouses(houses) {
@@ -91,8 +83,32 @@ class HouseStore {
     }
   }
 
+  getRouteHouses() {
+    return this.routeHouses;
+  }
+
+  clearRoute() {
+    this.routeHouses.forEach(house => {
+      house.indexInRoute = -1;
+    });
+    this.routeHouses.splice(0, this.routeHouses.length);
+    this.routeData = null;
+  }
+
   setRouteData(routeData) {
     this.routeData = routeData;
+  }
+
+  get routeDistance() {
+    let sum = 0;
+
+    if (this.routeData) {
+      this.routeData.forEach(routeDataItem => {
+        sum += routeDataItem.distance;
+      });
+    }
+
+    return sum;
   }
 }
 
@@ -104,8 +120,11 @@ decorate(HouseStore, {
   putHouses: action,
   addHouseToRoute: action,
   removeHouseFromRoute: action,
+  getRouteHouses: action,
   getHouses: action,
-  setRouteData: action
+  clearRoute: action,
+  setRouteData: action,
+  routeDistance: computed
 });
 
 const houseStore = new HouseStore();

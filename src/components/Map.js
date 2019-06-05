@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { styled } from '@material-ui/styles';
 
-//Openlayers map services
+//Map services
 import HouseFeatureService from '../services/HouseFeatureService';
 import RouteFeatureService from '../services/RouteFeatureService';
 import OlLayerSerice from '../services/OlLayerService';
 import OlMapService from '../services/OlMapService';
 import OlSourceService from '../services/OlSourceService';
+import MapboxRouteService from '../services/MapboxRouteService';
 
 const OlMapWrapper = styled('div')({
   height: '100%'
@@ -44,7 +45,7 @@ class Map extends Component {
     const houseSource = OlSourceService.createVectorSource([]);
     const houseClusterSource = OlSourceService.createClusterSource(
       houseSource,
-      15
+      40 //clusterDistance
     );
     const houseLayer = OlLayerSerice.createVectorLayer(
       houseClusterSource,
@@ -72,13 +73,16 @@ class Map extends Component {
     //Подписка на событие клика на карте
     this.map.on('click', eventData => {
       this.map.forEachFeatureAtPixel(eventData.pixel, (feature, layer) => {
+        //На карте кластеризованные сущности
+        //Получение сущностей входящих в кластер
         const childFeatures = feature.get('features');
 
-        //В маршрут будем добавлять только по одному дому
-        if (childFeatures.length !== 1) {
+        //Проверка на то, что в кластере только одна сущность
+        if (!childFeatures || childFeatures.length !== 1) {
           return;
         }
 
+        //Добавление или удаление сущности из маршрута
         let childFeature = childFeatures[0];
         const featureProperties = childFeature.getProperties();
         const house = featureProperties.house;
@@ -88,11 +92,40 @@ class Map extends Component {
           this.props.addHouseToRoute(house);
         }
 
+        //Получение маршрута
+        const routeHouses = this.props.getRouteHouses();
+        if (routeHouses.length > 1) {
+          MapboxRouteService.getRoute(
+            routeHouses.map(house => {
+              return house.position;
+            })
+          ).then(data => {
+            this.props.setRouteData(data);
+          });
+        } else {
+          this.props.setRouteData(null);
+        }
+
+        //Установка стиля отображения дома на карте
         feature.setStyle(clusterFeature => {
           return HouseFeatureService.clusterFeatureStyle(clusterFeature);
         });
       });
     });
+  }
+  _addHousesToMap() {
+    this.houseSource.clear();
+    this.houseSource.addFeatures(
+      HouseFeatureService.createHouseFeatures(this.props.houses)
+    );
+  }
+  _addRouteToMap() {
+    this.routeSource.clear();
+    if (this.props.routeData) {
+      this.routeSource.addFeatures(
+        RouteFeatureService.createRouteFeatures(this.props.routeData)
+      );
+    }
   }
   render() {
     return <OlMapWrapper ref={this.mapContainer} />;
@@ -100,19 +133,13 @@ class Map extends Component {
   componentDidMount() {
     //Установка карты в dom
     this.map.setTarget(this.mapContainer.current);
-  }
-  componentDidUpdate(prevProps) {
-    this.houseSource.clear();
-    this.houseSource.addFeatures(
-      HouseFeatureService.createHouseFeatures(this.props.houses)
-    );
 
-    this.routeSource.clear();
-    if (this.props.routeData) {
-      this.routeSource.addFeatures(
-        RouteFeatureService.createRouteFeatures(this.props.routeData)
-      );
-    }
+    //Добавление домов на карту
+    this._addHousesToMap();
+  }
+  componentDidUpdate() {
+    this._addHousesToMap();
+    this._addRouteToMap();
   }
 }
 

@@ -6,7 +6,8 @@
     "@mapbox/polyline": "^1.1.0",
     "@material-ui/core": "^4.0.1",
     "@material-ui/icons": "^4.0.1",
-    "express": "^4.17.1",
+    "@turf/bbox": "^6.0.1",
+    "@turf/random": "^6.0.2",
     "mobx": "^5.9.4",
     "mobx-react": "^6.0.2",
     "ol": "^5.3.3",
@@ -23,7 +24,6 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": "http://localhost:8081",
   "browserslist": {
     "production": [
       ">0.2%",

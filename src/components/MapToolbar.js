@@ -3,7 +3,14 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
+import DeleteIcon from '@material-ui/icons/DeleteOutline';
 import TextField from '@material-ui/core/TextField';
+import { styled } from '@material-ui/styles';
+
+const SearchField = styled(TextField)({
+  marginTop: 0,
+  marginLeft: '16px'
+});
 
 class MapToolbar extends Component {
   constructor(props) {
@@ -15,9 +22,9 @@ class MapToolbar extends Component {
     return (
       <Toolbar>
         <IconButton
-          edge='start'
-          color='inherit'
-          aria-label='Menu'
+          edge="start"
+          color="inherit"
+          aria-label="Menu"
           title={
             this.props.menuButtonPushed
               ? 'Скрыть список домов маршрута'
@@ -27,10 +34,18 @@ class MapToolbar extends Component {
         >
           {this.props.menuButtonPushed ? <CloseIcon /> : <MenuIcon />}
         </IconButton>
-        <TextField
-          label='Search field'
-          type='search'
-          margin='normal'
+        <IconButton
+          color="inherit"
+          aria-label="Menu"
+          title={'Очистить маршрут'}
+          onClick={this.props.clearButtonClick}
+        >
+          <DeleteIcon />
+        </IconButton>
+        <SearchField
+          label="Фильтровать по участкам"
+          type="search"
+          margin="normal"
           value={this.props.searchValue}
           onChange={this.handleSearchValueChange}
         />

@@ -11,7 +11,13 @@ const MapContainer = inject('houseStore', 'toolbarStore')(
       })}
       addHouseToRoute={house => houseStore.addHouseToRoute(house)}
       removeHouseFromRoute={house => houseStore.removeHouseFromRoute(house)}
+      getRouteHouses={() => {
+        return houseStore.getRouteHouses();
+      }}
       routeData={houseStore.routeData}
+      setRouteData={routeData => {
+        houseStore.setRouteData(routeData);
+      }}
     />
   ))
 );

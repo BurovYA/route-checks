@@ -1,4 +1,4 @@
-import { decorate, observable, computed, action } from 'mobx';
+import { decorate, observable, action } from 'mobx';
 
 class ToolbarStore {
   menuButtonPushed = false;
