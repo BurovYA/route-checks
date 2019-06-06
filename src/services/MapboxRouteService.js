@@ -43,7 +43,11 @@ class MapboxRouteService {
       body: searchParams
     })
       .then(response => {
-        return response.json();
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error('Сервис постоения маршрута не доступен');
+        }
       })
       .then(routeData => {
         return routeData.routes.map(route => {

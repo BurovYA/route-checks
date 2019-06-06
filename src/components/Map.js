@@ -99,9 +99,13 @@ class Map extends Component {
             routeHouses.map(house => {
               return house.position;
             })
-          ).then(data => {
-            this.props.setRouteData(data);
-          });
+          )
+            .then(data => {
+              this.props.setRouteData(data);
+            })
+            .catch(error => {
+              //TODO: обработка ошибки недоступности сервиса mapbox
+            });
         } else {
           this.props.setRouteData(null);
         }

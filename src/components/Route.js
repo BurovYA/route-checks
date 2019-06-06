@@ -50,7 +50,7 @@ const Route = props => {
       }}
     >
       <StyledList>
-        <ListItem alignItems="center" key={'no-data'}>
+        <ListItem alignItems="center" key={'route-distance'}>
           <ListItemText primary={`Длина маршрута: ${props.routeDistance} м`} />
         </ListItem>
         {listItems.length === 0 && (
